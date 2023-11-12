@@ -1,0 +1,8 @@
+{
+    "httpMethod": "GET",
+    "pathParameters": {
+        "pageid": "a28dd047e166457ca91f1097b4888560",
+        "repo": "Alogrithm",
+        "path": "백준/1234/test.md"
+    }
+}

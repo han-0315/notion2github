@@ -2,7 +2,6 @@
     "httpMethod": "GET",
     "pathParameters": {
         "pageid": "a28dd047e166457ca91f1097b4888560",
-        "repo": "Algorithm",
-        "path": "백준/1000/now5.md"
+        "title": "test"
     }
 }

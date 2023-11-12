@@ -11,3 +11,14 @@ AWS SAM을 이용한 서비리스 방식으로 작동합니다. 노션에의 데
 #### 사용한 프레임워크
 - API Gateway, Lambda, SAM CLI
 - javascript(notion-to-md, @notionhq/client[노션], @octokit/rest[깃허브])
+
+
+
+### GitHub Blog 이용
+- PageID와 GitHub Blog 포스팅 이름을 GitHub에 저장하여 맵핑
+  - PageID가 이미 존재하면, Update
+  - 없다면, 최초 업로드 -> 현재 날짜로 업로드
+- 노션의 Page ID는 페이지의 위치를 변경해도 변하지 않음
+- API 게이트웨이를 통해 받는 PATH는 아래와 같음
+  - PATH = {pageid}/{title}   
+  - title에서 공백은 '-'로 노션에서 입력해줘야 한다.
