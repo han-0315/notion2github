@@ -17,7 +17,7 @@ export const Handler = async (event) => {
     }
 
     console.info('received:', event);
-
+    //console.log(process.env.GITHUB_TOKEN);
 
     const pageId = event.pathParameters.pageid;
     const post_title = decodeURIComponent(event.pathParameters.title);
@@ -43,7 +43,7 @@ export const Handler = async (event) => {
     const response = {
         statusCode: 200,
         body: JSON.stringify({
-            message: `Received pageId: ${pageId} and post_title: ${post_title}`
+            message: `Success! Received pageId: ${pageId} and post_title: ${post_title}`
         })
     };
 
