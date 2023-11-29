@@ -2,6 +2,6 @@
     "httpMethod": "GET",
     "pathParameters": {
         "pageid": "a28dd047e166457ca91f1097b4888560",
-        "title": "test_test"
+        "title": "영화감독 숌"
     }
 }

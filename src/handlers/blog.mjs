@@ -47,7 +47,9 @@ export const Handler = async (event) => {
     imageMapping.forEach(({ imageUrl, ImageN }) => {
         // 쿼리 파라미터 이전까지의 URL 부분 추출
         const baseUrl = imageUrl.split('?')[0];
-        const imagePath = image_base_path + "/" + post_title + "/" + ImageN;
+        const encodingTitle = post_title.replace(/ /g, "%20");
+        const imagePath = image_base_path + "/" + encodingTitle + "/" + ImageN;
+
         // 마크다운 문자열 내의 URL을 imagePath 변경
         filePaths = filePaths.concat([tempdir + "/" + ImageN]);
         mdString = mdString.replace(new RegExp(baseUrl, 'g'), imagePath);
