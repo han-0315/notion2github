@@ -1,7 +1,7 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import Github from "../component/github.mjs";
-import axios from "axios";
+import ImageProcess from "../component/image.mjs";
 import fs from "fs";
 import os from "os";
 const notion = new Client({
@@ -11,6 +11,7 @@ const notion = new Client({
 const image_base_path = "/assets/img/post";
 const n2m = new NotionToMarkdown({ notionClient: notion });
 const github = new Github({});
+const downloader = new ImageProcess(notion);
 let imageMapping = [];
 let filePaths = [];
 
@@ -40,7 +41,7 @@ export const Handler = async (event) => {
     mdString = mdString.replace(/(\.png|\.(jpe?g|gif|bmp|tiff))(\?.*?)?(?=\)|$)/g, "$1");
 
     const tempdir = os.tmpdir();
-    imageMapping = await downloadImagesFromPage(pageId, tempdir);
+    imageMapping = await downloader.downloadImagesFromPage(pageId, tempdir);
     console.log("Download Image Complete");
 
     // mdString 문자열 내부 image url을 image name으로 변경
@@ -71,45 +72,4 @@ export const Handler = async (event) => {
     return response;
 }
 
-
-async function downloadImagesFromPage(pageId, basepath) {
-
-    const response = await notion.blocks.children.list({
-        block_id: pageId,
-        page_size: 50,
-    });
-    let id = 1;
-    let localImageMapping = [];
-    for (const block of response.results) {
-        if (block.type === 'image') {
-
-            const imageUrl = block.image.file.url; // 혹은 block.image.external.url;
-            const extensionMatch = imageUrl.match(/\.(png|jpg|jpeg|gif|bmp|tiff)(?=\?|$)/);
-            const ImageN = id + extensionMatch[0];
-            localImageMapping.push({ imageUrl, ImageN });
-            await downloadImage(imageUrl, basepath + "/" + ImageN);
-            id = id + 1;
-        }
-    }
-    return localImageMapping;
-}
-
-
-async function downloadImage(imageUrl, imagePath) {
-    try {
-        const response = await axios({
-            method: 'GET',
-            url: imageUrl,
-            responseType: 'stream'
-        });
-        response.data.pipe(fs.createWriteStream(imagePath));
-
-        return new Promise((resolve, reject) => {
-            response.data.on('end', () => resolve());
-            response.data.on('error', err => reject(err));
-        });
-    } catch (error) {
-        console.error('이미지 다운로드 중 오류 발생:', error);
-    }
-}
 
