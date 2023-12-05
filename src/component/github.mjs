@@ -95,7 +95,7 @@ export default class Github {
         }
         try {
             const result = await this.octokit.repos.createOrUpdateFileContents(action);
-            if (!result || result.status !== 200) {
+            if (!result || (result.status !== 200 && result.status !== 422)) {
                 throw new Error("Failed to update the file on GitHub.");
             }
         } catch (error) {
