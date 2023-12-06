@@ -12,7 +12,7 @@ export default class NotionImageDownloader {
     async downloadImagesFromPage(pageId, path) {
         const response = await this.notionClient.blocks.children.list({
             block_id: pageId,
-            page_size: 50,
+            page_size: 100,
         });
 
 
@@ -31,7 +31,7 @@ export default class NotionImageDownloader {
         if (block.has_children) {
             const childResponse = await this.notionClient.blocks.children.list({
                 block_id: block.id,
-                page_size: 50,
+                page_size: 100,
             });
 
             for (const childBlock of childResponse.results) {
