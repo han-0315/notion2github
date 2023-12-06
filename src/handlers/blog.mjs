@@ -12,8 +12,6 @@ const image_base_path = "/assets/img/post";
 const n2m = new NotionToMarkdown({ notionClient: notion });
 const github = new Github({});
 const downloader = new ImageProcess(notion);
-let imageMapping = [];
-let filePaths = [];
 
 export const Handler = async (event) => {
     if (event.httpMethod !== 'GET') {
@@ -41,6 +39,9 @@ export const Handler = async (event) => {
     mdString = mdString.replace(/(\.png|\.(jpe?g|gif|bmp|tiff))(\?.*?)?(?=\)|$)/g, "$1");
 
     const tempdir = os.tmpdir();
+    // 지역변수로 이동
+    let imageMapping = [];
+    let filePaths = [];
     imageMapping = await downloader.downloadImagesFromPage(pageId, tempdir);
     console.log("Download Image Complete");
 
