@@ -36,7 +36,7 @@ export const Handler = async (event) => {
     // Notion에서 추출한 데이터 앞에 있는 개행문자 제거 -> layout 형식을 위해
     mdString = mdString.parent.replace(/^\n+/g, '');
     // Image URL에서 쿼리 파라미터 제거
-    mdString = mdString.replace(/(\.png|\.(jpe?g|gif|bmp|tiff))(\?.*?)?(?=\)|$)/g, "$1");
+    mdString = mdString.replace(/(\.(png|jpg|jpeg|gif|bmp|svg|tif|tiff|heic|avif|webp))(\?.*?)?(?=\)|$)/g, "$1");
 
     const tempdir = os.tmpdir();
     // 지역변수로 이동

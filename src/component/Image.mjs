@@ -42,7 +42,7 @@ export default class NotionImageDownloader {
 
     async downloadImageFromBlock(block, path) {
         const imageUrl = block.image.file?.url || block.image.external?.url;
-        const extensionMatch = imageUrl.match(/\.(png|jpg|jpeg|gif|bmp|svg|tif|tiff|heic|avif)(?=\?|$)/);
+        const extensionMatch = imageUrl.match(/\.(png|jpg|jpeg|gif|bmp|svg|tif|tiff|heic|avif|webp)(?=\?|$)/);
 
 
         if (extensionMatch) {
