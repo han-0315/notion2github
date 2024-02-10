@@ -5,27 +5,6 @@ Description: >-
 Transform:
   - AWS::Serverless-2016-10-31
 Resources:
-  # notion2github:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: src/handlers/notion2github.Handler
-  #     Runtime: nodejs18.x
-  #     # 기본값
-  #     Architectures:
-  #       - x86_64
-  #     MemorySize: 256
-  #     Timeout: 100
-  #     Description: Notion to GitHub
-  #     Environment:
-  #       Variables:
-  #         NOTION_SECRET_API_KEY: "{{resolve:secretsmanager:notion2github:SecretString:NOTION_SECRET_API_KEY}}"
-  #         GITHUB_TOKEN: "{{resolve:secretsmanager:notion2github:SecretString:GITHUB_TOKEN}}"
-  #     Events:
-  #       Api:
-  #         Type: Api
-  #         Properties:
-  #           Path: /{pageid}/{repo}/{path+} #ex) page_id//{플랫폼}/{문제번호}/README.md -> page_id/algorithm/백준/1000/README.md
-  #           Method: get
   blog:
     Type: AWS::Serverless::Function
     Properties:
