@@ -2,6 +2,7 @@ import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import Github from "../component/github.mjs";
 import ImageProcess from "../component/image.mjs";
+import GoogleSearch from "../component/indexing.mjs";
 import fs from "fs";
 import os from "os";
 const notion = new Client({
@@ -11,6 +12,7 @@ const notion = new Client({
 const image_base_path = "/assets/img/post";
 const n2m = new NotionToMarkdown({ notionClient: notion });
 const github = new Github({});
+const googlesearch = new GoogleSearch({});
 const downloader = new ImageProcess(notion);
 
 export const Handler = async (event) => {
@@ -29,9 +31,11 @@ export const Handler = async (event) => {
     } catch (error) {
         throw new Error("Invalid Notion PageID or the page does not exist.");
     }
+
     // Notion에서 데이터 추출
     const mdblocks = await n2m.pageToMarkdown(pageId);
     let mdString = n2m.toMarkdownString(mdblocks);
+
 
     // Notion에서 추출한 데이터 앞에 있는 개행문자 제거 -> layout 형식을 위해
     mdString = mdString.parent.replace(/^\n+/g, '');
@@ -60,6 +64,10 @@ export const Handler = async (event) => {
     fs.writeFileSync(mdPath, mdString);
     filePaths = filePaths.concat([mdPath]);
     await github.post_upload(filePaths, post_title, pageId);
+
+
+
+    await googlesearch.authenticate(event.pathParameters.title);
 
     const response = {
         statusCode: 200,

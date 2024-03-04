@@ -1,7 +1,7 @@
 {
     "httpMethod": "GET",
     "pathParameters": {
-        "pageid": "4de350fe7b524834824b9e213d8302a0",
-        "title": "스케줄링"
+        "pageid": "9c8075893d104a86a5bdee5c31607009",
+        "title": "Terraform Associate 003"
     }
 }

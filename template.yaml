@@ -15,15 +15,21 @@ Resources:
       Architectures:
         - x86_64
       MemorySize: 256
-      Timeout: 100
+      Timeout: 200
       Description: Notion to GitHub
       Environment:
         Variables:
           NOTION_SECRET_API_KEY: "{{resolve:secretsmanager:Blog:SecretString:NOTION_SECRET_API_KEY}}"
           GITHUB_TOKEN: "{{resolve:secretsmanager:Blog:SecretString:GITHUB_TOKEN}}"
+
       Policies:
-        - AWSSecretsManagerGetSecretValuePolicy:
-            SecretArn: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:Blog-mZB6i0"
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action: "secretsmanager:GetSecretValue"
+              Resource:
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:Blog-mZB6i0"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:googleAPI-XJYnW3"
       Events:
         Api:
           Type: Api
