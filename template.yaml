@@ -15,7 +15,7 @@ Resources:
       Architectures:
         - x86_64
       MemorySize: 256
-      Timeout: 200
+      Timeout: 300
       Description: Notion to GitHub
       Environment:
         Variables:
