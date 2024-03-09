@@ -1,19 +1,22 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
+
 import Github from "../component/github.mjs";
 import ImageProcess from "../component/image.mjs";
-import GoogleSearch from "../component/indexing.mjs";
+import SQShanlder from "../component/sqs.mjs";
+
 import fs from "fs";
 import os from "os";
 const notion = new Client({
     auth: process.env.NOTION_SECRET_API_KEY,
 });
-// notion to markdown
-const image_base_path = "/assets/img/post";
 const n2m = new NotionToMarkdown({ notionClient: notion });
+
 const github = new Github({});
-const googlesearch = new GoogleSearch({});
+const sqs = new SQShanlder(process.env.QUEUE_URL);
 const downloader = new ImageProcess(notion);
+
+const image_base_path = "/assets/img/post";
 
 export const Handler = async (event) => {
     if (event.httpMethod !== 'GET') {
@@ -42,13 +45,15 @@ export const Handler = async (event) => {
     // Image URL에서 쿼리 파라미터 제거
     mdString = mdString.replace(/(\.(png|jpg|jpeg|gif|bmp|svg|tif|tiff|heic|avif|webp))(\?.*?)?(?=\)|$)/g, "$1");
 
+
     const tempdir = os.tmpdir();
-    // 지역변수로 이동
     let imageMapping = [];
     let filePaths = [];
     imageMapping = await downloader.downloadImagesFromPage(pageId, tempdir);
     console.log("Download Image Complete");
 
+
+    // *** 이미지 처리 ***
     // mdString 문자열 내부 image url을 image name으로 변경
     imageMapping.forEach(({ imageUrl, ImageN }) => {
         // 쿼리 파라미터 이전까지의 URL 부분 추출
@@ -66,8 +71,8 @@ export const Handler = async (event) => {
     await github.post_upload(filePaths, post_title, pageId);
 
 
-
-    await googlesearch.authenticate(event.pathParameters.title);
+    // 인덱싱을 위해 SQS에 Posting URL 메시지 전송
+    await sqs.sendMessage(event.pathParameters.title);
 
     const response = {
         statusCode: 200,

@@ -1,7 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   notion-sam
-# 필값
 Transform:
   - AWS::Serverless-2016-10-31
 Resources:
@@ -10,8 +9,6 @@ Resources:
     Properties:
       Handler: src/handlers/blog.Handler
       Runtime: nodejs18.x
-
-      # 기본값
       Architectures:
         - x86_64
       MemorySize: 256
@@ -21,7 +18,7 @@ Resources:
         Variables:
           NOTION_SECRET_API_KEY: "{{resolve:secretsmanager:Blog:SecretString:NOTION_SECRET_API_KEY}}"
           GITHUB_TOKEN: "{{resolve:secretsmanager:Blog:SecretString:GITHUB_TOKEN}}"
-
+          QUEUE_URL: "{{resolve:secretsmanager:Blog:SecretString:QUEUE_URL}}"
       Policies:
         - Version: "2012-10-17"
           Statement:
@@ -29,12 +26,10 @@ Resources:
               Action: "secretsmanager:GetSecretValue"
               Resource:
                 - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:Blog-mZB6i0"
-                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:googleAPI-XJYnW3"
       Events:
         Api:
           Type: Api
           Properties:
-            # PATH = {pageid}/{blog repo}/{title}
             Path: /{pageid}/{title}
             Method: get
 

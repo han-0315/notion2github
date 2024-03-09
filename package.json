@@ -9,7 +9,7 @@
         "@aws-sdk/lib-dynamodb": "^3.188.0",
         "@notionhq/client": "^2.2.13",
         "@octokit/rest": "^20.0.2",
-        "aws-sdk": "^2.1569.0",
+        "aws-sdk": "^2.1574.0",
         "axios": "^1.6.7",
         "crypto": "^1.0.1",
         "google-auth-library": "^9.6.3",
