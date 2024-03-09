@@ -13,9 +13,7 @@ export default class SQShanlder {
 
         const params = {
             QueueUrl: this.queueUrl,
-            MessageBody: JSON.stringify({
-                data: base_url + post_title
-            }),
+            MessageBody: base_url + post_title,
             DelaySeconds: delaySeconds
         };
 
