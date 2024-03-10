@@ -6,8 +6,8 @@ const repo = "han-0315.github.io";
 const post_base_path = "_posts";
 const image_base_path = "assets/img/post";
 const owner = "han-0315";
-const branch = "main";
 import moment from 'moment-timezone';
+import { formToJSON } from "axios";
 
 // 기본정보
 
@@ -95,7 +95,8 @@ export default class Github {
         }
         try {
             const result = await this.octokit.repos.createOrUpdateFileContents(action);
-            if (!result || (result.status !== 200 && result.status !== 422)) {
+            console.log(result)
+            if (!result || ((result.status < 200 && result.status > 299) && result.status !== 422)) {
                 throw new Error("Failed to update the file on GitHub.");
             }
         } catch (error) {
@@ -172,7 +173,7 @@ export default class Github {
 
         });
 
-        for (const action of actions) { // forEach 대신 for...of 사용
+        for (const action of actions) {
             console.log("Process: " + action.path);
             await this.pushGitHub(action);
         }

@@ -1,7 +1,7 @@
 {
     "httpMethod": "GET",
     "pathParameters": {
-        "pageid": "9c8075893d104a86a5bdee5c31607009",
-        "title": "Terraform Associate 003"
+        "pageid": "5b5a1c7474584e98b7a7c97eae16bd5c",
+        "title": "API Gateway"
     }
 }

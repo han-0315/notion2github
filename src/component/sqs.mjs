@@ -20,10 +20,8 @@ export default class SQShanlder {
         try {
             const result = await sqs.sendMessage(params).promise();
             console.log('Message sent successfully', result.MessageId);
-            return { statusCode: 200, body: `Message sent successfully: ${result.MessageId}` };
         } catch (error) {
             console.error('Error sending message to SQS', error);
-            return { statusCode: 500, body: 'Failed to send message' };
         }
     }
 }
