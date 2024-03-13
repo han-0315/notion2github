@@ -7,7 +7,6 @@ const post_base_path = "_posts";
 const image_base_path = "assets/img/post";
 const owner = "han-0315";
 import moment from 'moment-timezone';
-import { formToJSON } from "axios";
 
 // 기본정보
 

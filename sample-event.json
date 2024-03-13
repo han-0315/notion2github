@@ -1,0 +1,7 @@
+{
+    "httpMethod": "GET",
+    "pathParameters": {
+        "pageid": "{notion_page_id}",
+        "title": "{title}"
+    }
+}
