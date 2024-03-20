@@ -72,7 +72,7 @@ export const Handler = async (event) => {
 
 
     // 인덱싱을 위해 SQS에 Posting URL 메시지 전송
-    await sqs.sendMessage(event.pathParameters.title);
+    await sqs.sendMessage(post_title);
 
     const response = {
         statusCode: 200,
