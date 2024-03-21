@@ -10,13 +10,12 @@ export default class SQShanlder {
         this.queueUrl = queueUrl;
     }
     async sendMessage(post_title) {
-
+        post_title = encodeURIComponent(post_title.replace(/\s+/g, '-'));
         const params = {
             QueueUrl: this.queueUrl,
             MessageBody: base_url + post_title,
             DelaySeconds: delaySeconds
         };
-
         try {
             const result = await sqs.sendMessage(params).promise();
             console.log('Message sent successfully', result.MessageId);
