@@ -60,7 +60,7 @@ export default class NotionImageDownloader {
                 url: imageUrl,
                 responseType: 'stream'
             });
-            response.data.pipe(fs.createWriteStream(imagePath));
+            await response.data.pipe(fs.createWriteStream(imagePath));
 
             return new Promise((resolve, reject) => {
                 response.data.on('end', () => resolve());
@@ -70,8 +70,17 @@ export default class NotionImageDownloader {
             console.error('이미지 다운로드 중 오류 발생:', error);
         }
     }
+    async deleteImages(filePaths) {
+        filePaths.forEach((filePath) => {
+            try {
+                fs.unlinkSync(filePath);
+                console.log(`Deleted: ${filePath}`);
+            } catch (err) {
+                console.error(`Error deleting ${filePath}: ${err}`);
+            }
+        });
+    }
+
+
+
 }
-
-
-
-

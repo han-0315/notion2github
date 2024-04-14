@@ -70,6 +70,8 @@ export const Handler = async (event) => {
     filePaths = filePaths.concat([mdPath]);
     await github.post_upload(filePaths, post_title, pageId);
 
+    // 이미지 파일 삭제
+    downloader.deleteImages(filePaths);
 
     // 인덱싱을 위해 SQS에 Posting URL 메시지 전송
     await sqs.sendMessage(post_title);
