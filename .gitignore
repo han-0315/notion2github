@@ -3,4 +3,4 @@ node_modules
 .aws-sam
 .vscode
 samconfig.toml
-events
+events/*.json

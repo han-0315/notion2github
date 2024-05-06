@@ -10,14 +10,25 @@ export default class NotionImageDownloader {
         this.notionClient = notionClient;
     }
     async downloadImagesFromPage(pageId, path) {
-        const response = await this.notionClient.blocks.children.list({
-            block_id: pageId,
-            page_size: 100,
-        });
+        let start_cursor = undefined;
+        let hasMore = true;
 
+        // 반복적으로 모든 페이지의 데이터를 요청
+        while (hasMore) {
+            const response = await this.notionClient.blocks.children.list({
+                block_id: pageId,
+                start_cursor: start_cursor,
+                page_size: 100  // 한 페이지당 최대 block 수 설정
+            });
 
-        for (const block of response.results) {
-            await this.processBlock(block, path);
+            // 각 블록 처리
+            for (const block of response.results) {
+                await this.processBlock(block, path);
+            }
+
+            // start_cursor 업데이트
+            start_cursor = response.next_cursor;
+            hasMore = start_cursor != null;  // 다음 페이지가 있는지 확인
         }
 
         return this.localImageMapping;
@@ -25,6 +36,7 @@ export default class NotionImageDownloader {
 
     async processBlock(block, path) {
         if (block.type === 'image') {
+            console.log(block.image.file.url)
             await this.downloadImageFromBlock(block, path);
         }
 
