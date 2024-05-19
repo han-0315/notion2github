@@ -1,6 +1,7 @@
 import { Octokit } from "@octokit/rest";
 import fs from 'fs';
 import path from 'path';
+
 const mapfile_path = ".sync/mapping.json";
 const repo = "han-0315.github.io";
 const post_base_path = "_posts";

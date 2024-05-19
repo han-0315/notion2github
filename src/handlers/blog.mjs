@@ -1,24 +1,21 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
-
 import Github from "../component/github.mjs";
 import ImageProcess from "../component/image.mjs";
 import SQShanlder from "../component/sqs.mjs";
-
 import fs from "fs";
 import os from "os";
+
 const notion = new Client({
     auth: process.env.NOTION_SECRET_API_KEY,
 });
 const n2m = new NotionToMarkdown({ notionClient: notion });
-
 const github = new Github({});
 const sqs = new SQShanlder(process.env.QUEUE_URL);
-const downloader = new ImageProcess(notion);
-
 const image_base_path = "/assets/img/post";
 
 export const Handler = async (event) => {
+    const downloader = new ImageProcess(notion);
     if (event.httpMethod !== 'GET') {
         throw new Error(`getAllItems only accept GET method, you tried: ${event.httpMethod}`);
     }
